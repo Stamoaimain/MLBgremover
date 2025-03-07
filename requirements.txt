@@ -3,7 +3,6 @@ uvicorn
 python-multipart
 pillow
 torch
-torchvision
-carvekit
+rembg
 python-dotenv
 gunicorn
