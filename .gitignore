@@ -1,0 +1,34 @@
+# Python bytecode files
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Build and distribution directories
+build/
+dist/
+*.egg-info/
+
+# IDE and editor folders
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+
+# Environment variable files
+.env
+
+# Log files
+*.log
+
+# Docker-related files (optional, if you want to exclude them from version control)
+Dockerfile
+.dockerignore
+
+# Other temporary files
+*.bak
+*.swp
