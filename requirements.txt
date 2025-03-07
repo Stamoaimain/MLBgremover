@@ -6,3 +6,4 @@ torch
 rembg
 python-dotenv
 gunicorn
+onnxruntime
