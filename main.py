@@ -4,6 +4,7 @@ import base64
 from io import BytesIO
 from PIL import Image, UnidentifiedImageError
 from carvekit.api.high import HiInterface
+import os
 
 app = FastAPI(title="Background Removal API")
 
@@ -65,4 +66,5 @@ async def remove_background(request: ImageRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app,port=8080) 
+    port = int(os.getenv("PORT", 8080))
+    uvicorn.run(app, host="0.0.0.0", port=port) 
