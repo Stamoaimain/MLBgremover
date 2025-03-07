@@ -65,4 +65,4 @@ async def remove_background(request: ImageRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080) 
+    uvicorn.run(app,port=8080) 
