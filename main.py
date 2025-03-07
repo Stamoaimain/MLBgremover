@@ -3,7 +3,6 @@ from pydantic import BaseModel
 import base64
 from io import BytesIO
 from PIL import Image, UnidentifiedImageError
-from carvekit.api.high import HiInterface
 import os
 import logging
 import sys

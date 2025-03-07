@@ -6,3 +6,4 @@ torch
 torchvision
 carvekit
 python-dotenv
+gunicorn
