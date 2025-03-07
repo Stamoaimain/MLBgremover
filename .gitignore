@@ -25,9 +25,7 @@ dist/
 # Log files
 *.log
 
-# Docker-related files (optional, if you want to exclude them from version control)
-Dockerfile
-.dockerignore
+
 
 # Other temporary files
 *.bak
