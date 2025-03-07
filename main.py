@@ -5,12 +5,21 @@ from io import BytesIO
 from PIL import Image, UnidentifiedImageError
 from carvekit.api.high import HiInterface
 import os
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Background Removal API")
 
 # Initialize the background removal interface with default parameters
-# This should work with any version of carvekit
-interface = HiInterface()
+@app.on_event("startup")
+async def startup_event():
+    global interface
+    logger.info("Initializing CarveKit interface...")
+    interface = HiInterface()
+    logger.info("CarveKit interface initialized successfully")
 
 class ImageRequest(BaseModel):
     image: str  # base64 encoded image
@@ -67,4 +76,5 @@ async def remove_background(request: ImageRequest):
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8080))
-    uvicorn.run(app, host="0.0.0.0", port=port) 
+    logger.info(f"Starting server on port {port}")
+    uvicorn.run(app, host="0.0.0.0", port=port, log_level="info") 

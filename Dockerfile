@@ -19,10 +19,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application
 COPY . .
 
+# Set environment variables
+ENV PORT=8080
+ENV PYTHONUNBUFFERED=1
+ENV TIMEOUT=300
+
 # Expose the port
 EXPOSE 8080
 
-# Run the application
-CMD ["python", "main.py"]
+# Run the application with increased timeout
+CMD exec uvicorn main:app --host 0.0.0.0 --port $PORT --timeout-keep-alive 75
 
 
