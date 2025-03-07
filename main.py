@@ -6,20 +6,39 @@ from PIL import Image, UnidentifiedImageError
 from carvekit.api.high import HiInterface
 import os
 import logging
+import sys
 
 # Set up logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    stream=sys.stdout
+)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Background Removal API")
 
-# Initialize the background removal interface with default parameters
+# Global interface variable
+interface = None
+
 @app.on_event("startup")
 async def startup_event():
     global interface
-    logger.info("Initializing CarveKit interface...")
-    interface = HiInterface()
-    logger.info("CarveKit interface initialized successfully")
+    try:
+        logger.info("Starting application initialization...")
+        interface = HiInterface(
+            object_type="object",  # Set to a specific type
+            batch_size=1,  # Reduce batch size
+            device='cpu'  # Explicitly use CPU
+        )
+        logger.info("CarveKit interface initialized successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize CarveKit: {str(e)}")
+        raise
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
 
 class ImageRequest(BaseModel):
     image: str  # base64 encoded image
@@ -77,4 +96,11 @@ if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8080))
     logger.info(f"Starting server on port {port}")
-    uvicorn.run(app, host="0.0.0.0", port=port, log_level="info") 
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=port,
+        log_level="info",
+        timeout_keep_alive=75,
+        workers=1
+    ) 
