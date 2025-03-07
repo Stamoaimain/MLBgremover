@@ -21,20 +21,7 @@ app = FastAPI(title="Background Removal API")
 # Global interface variable
 interface = None
 
-@app.on_event("startup")
-async def startup_event():
-    global interface
-    try:
-        logger.info("Starting application initialization...")
-        interface = HiInterface(
-            object_type="object",  # Set to a specific type
-            batch_size=1,  # Reduce batch size
-            device='cpu'  # Explicitly use CPU
-        )
-        logger.info("CarveKit interface initialized successfully")
-    except Exception as e:
-        logger.error(f"Failed to initialize CarveKit: {str(e)}")
-        raise
+
 
 @app.get("/health")
 async def health_check():
