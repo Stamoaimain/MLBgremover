@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import base64
 from io import BytesIO
 from PIL import Image, UnidentifiedImageError
+from carvekit.api.high import HiInterface
 import os
 import logging
 import sys
@@ -15,12 +16,17 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Initialize the interface at module level with all parameters explicitly set
+logger.info("Initializing CarveKit interface...")
+interface = HiInterface(
+    object_type="object",
+    device='cpu',
+    seg_mask_size=640,  # Add default segmentation mask size
+ # No preprocessing
+)
+logger.info("CarveKit interface initialized successfully")
+
 app = FastAPI(title="Background Removal API")
-
-# Global interface variable
-interface = None
-
-
 
 @app.get("/health")
 async def health_check():
