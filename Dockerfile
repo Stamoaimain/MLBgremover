@@ -2,7 +2,7 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Install system dependencies more efficiently
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1-mesa-glx \
     libglib2.0-0 \
@@ -18,10 +18,9 @@ COPY . .
 
 ENV PORT=8080
 ENV PYTHONUNBUFFERED=1
-# Increase timeouts and memory management
-ENV GUNICORN_CMD_ARGS="--timeout 600 --keep-alive 120 --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind :$PORT --log-level info"
+ENV TIMEOUT=300
 
 EXPOSE 8080
 
-# Use gunicorn with longer timeouts
-CMD exec gunicorn main:app $GUNICORN_CMD_ARGS
+# Use uvicorn directly with increased timeout
+CMD uvicorn main:app --host 0.0.0.0 --port $PORT --timeout-keep-alive $TIMEOUT

@@ -92,13 +92,14 @@ async def remove_background(request: ImageRequest):
         logger.error(f"Error processing request: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+# This is only needed if you want to run the application locally
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8080))
     
     logger.info(f"Starting server on port {port}")
     uvicorn.run(
-        "main:app",
+        app,
         host="0.0.0.0",
         port=port,
         log_level="info",
